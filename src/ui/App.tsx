@@ -1,4 +1,4 @@
-import './App.css'
+import './assets/styles/app.css'
 import ImageTool from './components/ImageTools'
 
 function App() {

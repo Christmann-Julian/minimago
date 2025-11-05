@@ -33,12 +33,11 @@ export default function ImageTool() {
   function mapErrorToUserMessage(err: unknown) {
     const text = typeof err === 'string' ? err : err instanceof Error ? err.message : String(err);
 
-    if (/Input file not found/i.test(text)) return 'Fichier introuvable — vérifiez le chemin.';
+    if (/Input file not found/i.test(text)) return 'Fichier introuvable. Vérifiez le chemin.';
     if (/Input file too large/i.test(text)) return 'Fichier trop volumineux (limite 100MB).';
     if (/Requested size too large/i.test(text)) return 'Taille demandée trop grande (risque mémoire).';
     if (/width out of range/i.test(text) || /height out of range/i.test(text)) return 'Dimensions hors limites.';
     if (/Invalid target format/i.test(text)) return 'Format non supporté.';
-    if (/outputPath must be inside/i.test(text)) return "Le chemin de sortie doit rester dans le même dossier que le fichier d'entrée.";
 
     return `Erreur : ${text}`;
   }

@@ -1,10 +1,12 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, Menu } from 'electron';
 import { isDev } from './util.js';
 import { getPreloadPath, getUIPath } from './pathResolver.js';
 import { processImage } from './imageProcessor.js';
 
 app.on('ready', () => {
+  Menu.setApplicationMenu(null);
   const mainWindow = new BrowserWindow({
+    icon: './desktopIcon.png',
     webPreferences: {
       preload: getPreloadPath(),
       devTools: isDev(),

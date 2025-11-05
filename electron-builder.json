@@ -1,5 +1,5 @@
 {
-  "appId": "com.j-christmann.minimago",
+  "appId": "com.julian-christmann.minimago",
   "files": ["dist-electron", "dist-react"],
   "extraResources": ["dist-electron/preload.cjs", "src/assets/**"],
   "icon": "./desktopIcon.png",

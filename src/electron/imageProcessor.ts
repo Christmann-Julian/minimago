@@ -1,6 +1,7 @@
 import path from 'path';
 import sharp from 'sharp';
 import fsPromises from 'fs/promises';
+import { app } from 'electron';
 
 export type ImageProcessOptions = {
   inputPath: string;
@@ -74,26 +75,21 @@ async function preparePathsAndChecks(opts: ImageProcessOptions) {
   const sourceExt = path.extname(opts.inputPath).slice(1).toLowerCase();
   const targetExt = (opts.format ?? sourceExt).toLowerCase();
 
-  const defaultOut = path.join(
-    path.dirname(opts.inputPath),
-    `${path.basename(opts.inputPath, path.extname(opts.inputPath))}-out.${targetExt}`
+  const downloadsDir = app.getPath('downloads');
+
+  const outPath = path.join(
+    downloadsDir,
+    `${path.basename(opts.inputPath, path.extname(opts.inputPath))}-minimago-${Date.now()}.${targetExt}`
   );
-  const outPath = opts.outputPath ?? defaultOut;
 
   const resolvedOut = path.resolve(outPath);
-  const resolvedOutDir = path.dirname(resolvedOut);
-  const allowedBase = path.resolve(path.dirname(opts.inputPath));
-  const allowedPrefix = allowedBase + path.sep;
-  if (!(resolvedOutDir === allowedBase || resolvedOutDir.startsWith(allowedPrefix))) {
-    throw new Error('outputPath must be inside the input file directory');
-  }
 
   return { sourceExt, targetExt, resolvedOut, estWidth, estHeight };
 }
 
 export async function processImage(rawOpts: unknown): Promise<{ outputPath: string }> {
   const opts = normalizeAndCheckShape(rawOpts);
-  const { sourceExt, targetExt, resolvedOut } = await preparePathsAndChecks(opts);
+  const { targetExt, resolvedOut } = await preparePathsAndChecks(opts);
 
   let pipeline = sharp(opts.inputPath);
   if (opts.width || opts.height) pipeline = pipeline.resize(opts.width ?? null, opts.height ?? null);
@@ -101,22 +97,47 @@ export async function processImage(rawOpts: unknown): Promise<{ outputPath: stri
   if (targetExt === 'jpeg' || targetExt === 'jpg') {
     pipeline = pipeline.jpeg({ quality: opts.quality ?? 80 });
   } else if (targetExt === 'png') {
-    pipeline = pipeline.png({ compressionLevel: 9, adaptiveFiltering: true });
+    pipeline = pipeline.png(pngOptionsFromQuality(opts.quality));
   } else if (targetExt === 'webp') {
     pipeline = pipeline.webp({ quality: opts.quality ?? 80 });
   } else if (targetExt === 'avif') {
     pipeline = pipeline.avif({ quality: Math.max(10, Math.min(80, opts.quality ?? 50)) });
   } else if (targetExt === 'svg') {
-    if (sourceExt === 'svg' && opts.width === undefined && opts.height === undefined) {
-      await fsPromises.copyFile(opts.inputPath, resolvedOut);
-      return { outputPath: resolvedOut };
-    } else {
-      pipeline = pipeline.png({ compressionLevel: 9, adaptiveFiltering: true });
-    }
+    // @todo : sharp does not support svg output. Consider using another library if needed.
+    throw new Error('SVG output format is not supported yet');
   }
 
   await fsPromises.mkdir(path.dirname(resolvedOut), { recursive: true });
   await pipeline.toFile(resolvedOut);
 
   return { outputPath: resolvedOut };
+}
+
+function pngOptionsFromQuality(q: number | undefined) {
+  const quality = Math.max(1, Math.min(100, Number(q ?? 80)));
+  const tier = Math.ceil(quality / 10) * 10;
+
+  switch (tier) {
+    case 10:
+      return { palette: true, quality: 10, effort: 10, colours: 16, dither: 0.0, compressionLevel: 9, adaptiveFiltering: true };
+    case 20:
+      return { palette: true, quality: 20, effort: 9, colours: 32, dither: 0.1, compressionLevel: 9, adaptiveFiltering: true };
+    case 30:
+      return { palette: true, quality: 30, effort: 9, colours: 64, dither: 0.2, compressionLevel: 9, adaptiveFiltering: true };
+    case 40:
+      return { palette: true, quality: 40, effort: 8, colours: 96, dither: 0.3, compressionLevel: 9, adaptiveFiltering: true };
+    case 50:
+      return { palette: true, quality: 50, effort: 8, colours: 128, dither: 0.4, compressionLevel: 9, adaptiveFiltering: true };
+    case 60:
+      return { palette: true, quality: 60, effort: 8, colours: 160, dither: 0.5, compressionLevel: 9, adaptiveFiltering: true };
+    case 70:
+      return { palette: true, quality: 70, effort: 7, colours: 192, dither: 0.6, compressionLevel: 9, adaptiveFiltering: true };
+    case 80:
+      return { palette: true, quality: 80, effort: 7, colours: 224, dither: 0.75, compressionLevel: 9, adaptiveFiltering: true };
+    case 90:
+      return { palette: true, quality: 90, effort: 7, colours: 240, dither: 0.9, compressionLevel: 9, adaptiveFiltering: true };
+    case 100:
+    default:
+      return { palette: false, compressionLevel: 9, adaptiveFiltering: true, progressive: false };
+  }
 }
