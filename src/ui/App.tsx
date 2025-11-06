@@ -1,13 +1,14 @@
-import './assets/styles/app.css'
-import ImageTool from './components/ImageTools'
+import './assets/styles/app.css';
+import ImageTool from './components/ImageTools';
+import AppHeader from './components/AppHeader';
 
 function App() {
   return (
     <>
-      <h1>Minimago</h1>
+      <AppHeader />
       <ImageTool />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -42,4 +42,8 @@ app.on('ready', () => {
       return { success: false, error: { code: 'PROCESS_ERROR', message: message } };
     }
   });
+
+  ipcMain.handle('app:get-locale', () => {
+    return app.getLocale();
+  });
 });

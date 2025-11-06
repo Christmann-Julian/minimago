@@ -23,8 +23,60 @@ body {
   padding: 28px;
 }
 
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 0px;
+}
+
+.lang-switch {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.lang-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.04);
+  background: transparent;
+  color: var(--muted);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, color .12s ease, background .12s ease;
+  outline: none;
+  min-width: 44px;
+  text-align: center;
+}
+
+.lang-btn:hover {
+  transform: translateY(-2px);
+}
+
+.lang-btn:focus {
+  box-shadow: 0 6px 18px rgba(96,165,250,0.08);
+}
+
+.lang-btn.active {
+  background: linear-gradient(90deg, var(--accent), #3ee7b4);
+  color: #02221a;
+  box-shadow: 0 8px 20px rgba(38,197,125,0.12);
+  transform: translateY(-1px);
+}
+
+html.lang-changing body > * {
+  animation: lang-fade 220ms ease;
+}
+
+@keyframes lang-fade {
+  0% { opacity: 0.6; transform: translateY(3px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
 h1 {
-  margin: 0 0 18px 0;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--accent-2);
@@ -198,7 +250,7 @@ h1 {
 }
 
 .error-message {
-  margin-top: 8px;
+  margin-top: 20px;
   padding: 10px;
   border-radius: 8px;
   background: linear-gradient(90deg,#ffdde0,#ffd6d6);
