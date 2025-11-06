@@ -17,5 +17,6 @@ interface Window {
       | { success: true; data: { outputPath: string } }
       | { success: false; error: { code: string; message: string } }
     >;
+    getAppLocale: () => Promise<string>;
   };
 }

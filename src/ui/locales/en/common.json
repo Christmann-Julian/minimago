@@ -1,0 +1,27 @@
+{
+  "app": { "title": "Minimago" },
+  "imageTool": {
+    "title": "Image Tools",
+    "subtitle": "Resize, convert and compress",
+    "choose": "Choose an image",
+    "noFile": "No file selected",
+    "width": "Width",
+    "height": "Height",
+    "format": "Format",
+    "quality": "Quality",
+    "process": "Process",
+    "processing": "Processing…",
+    "reset": "Reset",
+    "done": "Done",
+    "output": "Output",
+    "recommended": "Recommended formats for photos: webp / avif — PNG for transparency"
+  },
+  "errors": {
+    "inputNotFound": "Input file not found",
+    "fileTooLarge": "Input file too large (limit 100MB).",
+    "sizeTooLarge": "Requested size too large (memory risk).",
+    "dimensionsOutOfRange": "Dimensions out of range.",
+    "invalidFormat": "Invalid target format.",
+    "unknown": "Error: {{msg}}"
+  }
+}
