@@ -12,7 +12,11 @@ eslint.config.js
 .eslintcache
 
 dist
+dist
+dist-ssr
+dist-react
 dist-electron
+*.local
 build
 out
 release
