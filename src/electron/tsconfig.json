@@ -3,8 +3,13 @@
     "strict": true,
     "target": "ESNext",
     "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "outDir": "../../dist-electron",
+    "rootDir": ".",
     "skipLibCheck": true,
     "types": ["../../types"]
-  }
+  },
+  "include": [
+    "." 
+  ]
 }

@@ -2,6 +2,8 @@
   "name": "minimago",
   "private": true,
   "version": "1.0.0",
+  "author": "Julian CHRISTMANN",
+  "description": "Minimago is an Electron-based application for advanced image processing with a modern UI.",
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {

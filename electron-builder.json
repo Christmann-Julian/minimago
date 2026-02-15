@@ -1,7 +1,21 @@
 {
   "appId": "com.julian-christmann.minimago",
-  "files": ["dist-electron", "dist-react"],
-  "extraResources": ["dist-electron/preload.cjs", "src/assets/**"],
+  "productName": "Minimago",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist-electron/**/*",
+    "dist-react/**/*",
+    "package.json"
+  ],
+  "asarUnpack": [
+    "**/node_modules/sharp/**/*",
+    "**/node_modules/@img/**/*"
+  ],
+  "extraResources": [
+    "src/assets/**"
+  ],
   "icon": "./desktopIcon.png",
   "mac": {
     "target": "dmg"
@@ -11,6 +25,19 @@
     "category": "Utility"
   },
   "win": {
-    "target": ["portable", "msi"]
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": true
   }
 }
