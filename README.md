@@ -1,73 +1,95 @@
-# React + TypeScript + Vite
+# Minimago
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Minimago is an Electron-based application designed to provide advanced image processing tools with a user-friendly interface. Built with TypeScript and React, it leverages the power of modern web technologies to deliver a seamless desktop experience.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Image Processing**: Perform various image transformations and enhancements.
+- **Customizable UI**: Tailor the interface to your preferences.
+- **Localization Support**: Available in multiple languages (English, French).
+- **Lightweight and Fast**: Optimized for performance.
 
-## React Compiler
+## Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The project is organized as follows:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+minimago/
+├── dist-electron/       # Compiled Electron files
+├── src/                 # Source code
+│   ├── electron/        # Electron main and preload scripts
+│   └── ui/              # React frontend
+│       ├── components/  # Reusable React components
+│       ├── locales/     # Localization files
+│       └── assets/      # Static assets
+├── package.json         # Project metadata and dependencies
+├── tsconfig.json        # TypeScript configuration
+├── vite.config.ts       # Vite configuration for development
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Installation
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Clone the repository:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+   ```bash
+   git clone https://github.com/your-repo/minimago.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd minimago
+   ```
+
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+## Development
+
+To start the development server:
+
+```bash
+npm run dev
 ```
+
+## Distribution
+
+To package the application for different platforms, use the following commands:
+
+- **macOS**:
+
+  ```bash
+  npm run dist:mac
+  ```
+
+  This will transpile the Electron code, build the application, and create a distributable for macOS (ARM64).
+
+- **Windows**:
+
+  ```bash
+  npm run dist:win
+  ```
+
+  This will transpile the Electron code, build the application, and create a distributable for Windows (x64).
+
+- **Linux**:
+  ```bash
+  npm run dist:linux
+  ```
+  This will transpile the Electron code, build the application, and create a distributable for Linux (x64).
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Acknowledgments
+
+- [Electron](https://www.electronjs.org/)
+- [React](https://reactjs.org/)
+- [Vite](https://vitejs.dev/)
