@@ -19,7 +19,10 @@ export default function CustomSelect<T extends string>({
 }: Props<T>) {
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState<number>(() =>
-    Math.max(0, options.findIndex(o => o.value === value))
+    Math.max(
+      0,
+      options.findIndex((o) => o.value === value),
+    ),
   );
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -33,7 +36,7 @@ export default function CustomSelect<T extends string>({
   }, []);
 
   useEffect(() => {
-    const idx = options.findIndex(o => o.value === value);
+    const idx = options.findIndex((o) => o.value === value);
     if (idx >= 0) setHighlight(idx);
   }, [value, options]);
 
@@ -50,26 +53,31 @@ export default function CustomSelect<T extends string>({
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setOpen(true);
-      setHighlight(h => Math.min(options.length - 1, h + 1));
+      setHighlight((h) => Math.min(options.length - 1, h + 1));
     }
     if (e.key === 'ArrowUp') {
       e.preventDefault();
       setOpen(true);
-      setHighlight(h => Math.max(0, h - 1));
+      setHighlight((h) => Math.max(0, h - 1));
     }
   }
 
   return (
-    <div className={`custom-select ${className ?? ''}`} ref={ref} role="listbox" aria-label={ariaLabel}>
+    <div
+      className={`custom-select ${className ?? ''}`}
+      ref={ref}
+      role="listbox"
+      aria-label={ariaLabel}
+    >
       <button
         type="button"
         className="custom-select-button"
-        onClick={() => setOpen(v => !v)}
+        onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
         onKeyDown={onKey}
       >
-        {options.find(f => f.value === value)?.label}
+        {options.find((f) => f.value === value)?.label}
         <span className={`caret ${open ? 'open' : ''}`} />
       </button>
 

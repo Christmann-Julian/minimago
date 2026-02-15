@@ -9,7 +9,7 @@ export function isDev(): boolean {
 export function ipcWebContentsSend<Key extends keyof EventPayloadMapping>(
   key: Key,
   webContents: WebContents,
-  payload: EventPayloadMapping[Key]
+  payload: EventPayloadMapping[Key],
 ) {
   webContents.send(key, payload);
 }

@@ -1,6 +1,6 @@
 type EventPayloadMapping = {
-    'dialog:openFiles': string[];
-    'image:process': { outputPath: string };
+  'dialog:openFiles': string[];
+  'image:process': { outputPath: string };
 };
 
 interface Window {
@@ -10,7 +10,7 @@ interface Window {
       inputPath: string;
       width?: number;
       height?: number;
-      format?: 'png'|'jpg'|'jpeg'|'webp'|'svg'|'avif';
+      format?: 'png' | 'jpg' | 'jpeg' | 'webp' | 'svg' | 'avif';
       quality?: number;
       outputPath?: string;
     }) => Promise<

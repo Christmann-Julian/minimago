@@ -28,18 +28,26 @@ app.on('ready', () => {
   ipcMain.handle('dialog:openFiles', async () => {
     const res = await dialog.showOpenDialog(mainWindow, {
       properties: ['openFile', 'multiSelections'],
-      filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp', 'svg', 'avif'] }],
+      filters: [
+        {
+          name: 'Images',
+          extensions: ['png', 'jpg', 'jpeg', 'webp', 'svg', 'avif'],
+        },
+      ],
     });
     return res.filePaths;
   });
 
   ipcMain.handle('image:process', async (_event, opts) => {
-      try {
+    try {
       const res = await processImage(opts);
       return { success: true, data: res };
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      return { success: false, error: { code: 'PROCESS_ERROR', message: message } };
+      return {
+        success: false,
+        error: { code: 'PROCESS_ERROR', message: message },
+      };
     }
   });
 

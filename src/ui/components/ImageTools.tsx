@@ -2,7 +2,10 @@ import { useState } from 'react';
 import CustomSelect from './CustomSelect';
 import { useTranslation } from 'react-i18next';
 
-const FORMATS: Array<{ value: 'png'|'jpg'|'jpeg'|'webp'|'svg'|'avif'; label: string }> = [
+const FORMATS: Array<{
+  value: 'png' | 'jpg' | 'jpeg' | 'webp' | 'svg' | 'avif';
+  label: string;
+}> = [
   { value: 'png', label: 'PNG' },
   { value: 'jpg', label: 'JPG' },
   { value: 'jpeg', label: 'JPEG' },
@@ -17,7 +20,9 @@ export default function ImageTool() {
   const [files, setFiles] = useState<string[]>([]);
   const [width, setWidth] = useState<number | ''>('');
   const [height, setHeight] = useState<number | ''>('');
-  const [format, setFormat] = useState<'png'|'jpg'|'jpeg'|'webp'|'svg'|'avif'>('png');
+  const [format, setFormat] = useState<
+    'png' | 'jpg' | 'jpeg' | 'webp' | 'svg' | 'avif'
+  >('png');
   const [quality, setQuality] = useState<number>(80);
 
   const [message, setMessage] = useState<string>('');
@@ -34,11 +39,17 @@ export default function ImageTool() {
   }
 
   function mapErrorToUserMessage(err: unknown) {
-    const text = typeof err === 'string' ? err : err instanceof Error ? err.message : String(err);
+    const text =
+      typeof err === 'string'
+        ? err
+        : err instanceof Error
+          ? err.message
+          : String(err);
     if (/Input file not found/i.test(text)) return t('errors.inputNotFound');
     if (/Input file too large/i.test(text)) return t('errors.fileTooLarge');
     if (/Requested size too large/i.test(text)) return t('errors.sizeTooLarge');
-    if (/width out of range/i.test(text) || /height out of range/i.test(text)) return t('errors.dimensionsOutOfRange');
+    if (/width out of range/i.test(text) || /height out of range/i.test(text))
+      return t('errors.dimensionsOutOfRange');
     if (/Invalid target format/i.test(text)) return t('errors.invalidFormat');
     return t('errors.unknown', { msg: text });
   }
@@ -46,7 +57,10 @@ export default function ImageTool() {
   async function process() {
     setError(null);
     setOutputPath(null);
-    if (!files[0]) { setError(t('imageTool.noFile')); return; }
+    if (!files[0]) {
+      setError(t('imageTool.noFile'));
+      return;
+    }
     setProcessing(true);
     setMessage(t('imageTool.processing'));
 
@@ -60,7 +74,9 @@ export default function ImageTool() {
       });
 
       if (!resp.success) {
-        setError(mapErrorToUserMessage(resp.error?.message ?? 'Erreur inconnue'));
+        setError(
+          mapErrorToUserMessage(resp.error?.message ?? 'Erreur inconnue'),
+        );
         setOutputPath(null);
         setMessage('');
       } else {
@@ -86,7 +102,13 @@ export default function ImageTool() {
 
         <div className="card-body">
           <div className="file-row">
-            <button className="btn primary" onClick={pickFiles} disabled={processing}>{t('imageTool.choose')}</button>
+            <button
+              className="btn primary"
+              onClick={pickFiles}
+              disabled={processing}
+            >
+              {t('imageTool.choose')}
+            </button>
             <div className="file-info">{files[0] ?? t('imageTool.noFile')}</div>
           </div>
 
@@ -98,7 +120,9 @@ export default function ImageTool() {
                 type="number"
                 placeholder="px"
                 value={width === '' ? '' : width}
-                onChange={e => setWidth(e.target.value === '' ? '' : Number(e.target.value))}
+                onChange={(e) =>
+                  setWidth(e.target.value === '' ? '' : Number(e.target.value))
+                }
                 disabled={processing}
               />
             </div>
@@ -110,7 +134,9 @@ export default function ImageTool() {
                 type="number"
                 placeholder="px"
                 value={height === '' ? '' : height}
-                onChange={e => setHeight(e.target.value === '' ? '' : Number(e.target.value))}
+                onChange={(e) =>
+                  setHeight(e.target.value === '' ? '' : Number(e.target.value))
+                }
                 disabled={processing}
               />
             </div>
@@ -120,29 +146,47 @@ export default function ImageTool() {
               <CustomSelect
                 options={FORMATS}
                 value={format}
-                onChange={v => setFormat(v)}
+                onChange={(v) => setFormat(v)}
               />
             </div>
 
             <div className="control quality-control">
-              <label className="label">{t('imageTool.quality')} <span className="quality-value">{quality}</span>%</label>
+              <label className="label">
+                {t('imageTool.quality')}{' '}
+                <span className="quality-value">{quality}</span>%
+              </label>
               <input
                 className="range"
                 type="range"
                 min={1}
                 max={100}
                 value={quality}
-                onChange={e => setQuality(Number(e.target.value))}
+                onChange={(e) => setQuality(Number(e.target.value))}
                 disabled={processing}
               />
             </div>
           </div>
 
           <div className="actions">
-            <button className="btn primary large" onClick={process} disabled={processing}>
+            <button
+              className="btn primary large"
+              onClick={process}
+              disabled={processing}
+            >
               {processing ? t('imageTool.processing') : t('imageTool.process')}
             </button>
-            <button className="btn ghost" onClick={() => { setFiles([]); setMessage(''); setError(null); setOutputPath(null); }} disabled={processing}>{t('imageTool.reset')}</button>
+            <button
+              className="btn ghost"
+              onClick={() => {
+                setFiles([]);
+                setMessage('');
+                setError(null);
+                setOutputPath(null);
+              }}
+              disabled={processing}
+            >
+              {t('imageTool.reset')}
+            </button>
           </div>
 
           <div className="message" role="status" aria-live="polite">
