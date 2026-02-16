@@ -1,5 +1,10 @@
 {
   "app": { "title": "Minimago" },
+  "nav": {
+    "label": "pages",
+    "resize": "Resize",
+    "crop": "Crop"
+  },
   "imageTool": {
     "title": "Image Tools",
     "subtitle": "Resize, convert and compress",
@@ -16,12 +21,31 @@
     "output": "Output",
     "recommended": "Recommended formats for photos: webp / avif — PNG for transparency"
   },
+  "cropTool": {
+    "title": "Crop Image",
+    "subtitle": "Cut a precise area with pixel control",
+    "choose": "Choose an image",
+    "noFile": "No file selected",
+    "previewHint": "Select an image to preview the crop area",
+    "lockRatio": "Lock aspect ratio (16:9)",
+    "centerHorizontal": "↔ Center H.",
+    "centerVertical": "↕ Center V.",
+    "process": "Crop",
+    "processing": "Cropping…",
+    "reset": "Reset",
+    "success": "Done",
+    "recommended": "Tip: drag and resize the selection area to adjust your crop"
+  },
   "errors": {
     "inputNotFound": "Input file not found",
     "fileTooLarge": "Input file too large (limit 100MB).",
     "sizeTooLarge": "Requested size too large (memory risk).",
     "dimensionsOutOfRange": "Dimensions out of range.",
+    "cropOutOfRange": "Crop area exceeds image bounds.",
+    "cropInvalid": "Invalid crop dimensions.",
+    "invalidDimensions": "Invalid selection",
     "invalidFormat": "Invalid target format.",
+    "generic": "Error during processing",
     "unknown": "Error: {{msg}}"
   }
 }

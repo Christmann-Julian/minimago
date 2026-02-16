@@ -5,6 +5,12 @@ import { app } from 'electron';
 
 export type ImageProcessOptions = {
   inputPath: string;
+  crop?: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
   width?: number;
   height?: number;
   format?: 'png' | 'jpg' | 'jpeg' | 'webp' | 'svg' | 'avif';
@@ -28,6 +34,32 @@ function normalizeAndCheckShape(obj: unknown): ImageProcessOptions {
   const o = obj as Record<string, unknown>;
   if (typeof o.inputPath !== 'string' || o.inputPath.trim() === '')
     throw new Error('Invalid inputPath');
+
+  let crop: ImageProcessOptions['crop'] | undefined = undefined;
+  if (o.crop && typeof o.crop === 'object') {
+    const c = o.crop as Record<string, unknown>;
+    if (
+      typeof c.x === 'number' &&
+      Number.isInteger(c.x) &&
+      c.x >= 0 &&
+      typeof c.y === 'number' &&
+      Number.isInteger(c.y) &&
+      c.y >= 0 &&
+      typeof c.width === 'number' &&
+      Number.isInteger(c.width) &&
+      c.width > 0 &&
+      typeof c.height === 'number' &&
+      Number.isInteger(c.height) &&
+      c.height > 0
+    ) {
+      crop = {
+        x: c.x,
+        y: c.y,
+        width: c.width,
+        height: c.height,
+      };
+    }
+  }
 
   const format =
     typeof o.format === 'string'
@@ -60,6 +92,7 @@ function normalizeAndCheckShape(obj: unknown): ImageProcessOptions {
 
   return {
     inputPath: o.inputPath,
+    crop,
     width: width === undefined ? undefined : Math.round(width),
     height: height === undefined ? undefined : Math.round(height),
     format,
@@ -114,6 +147,16 @@ export async function processImage(
   const { targetExt, resolvedOut } = await preparePathsAndChecks(opts);
 
   let pipeline = sharp(opts.inputPath);
+
+  if (opts.crop) {
+    pipeline = pipeline.extract({
+      left: opts.crop.x,
+      top: opts.crop.y,
+      width: opts.crop.width,
+      height: opts.crop.height,
+    });
+  }
+
   if (opts.width || opts.height)
     pipeline = pipeline.resize(opts.width ?? null, opts.height ?? null);
 

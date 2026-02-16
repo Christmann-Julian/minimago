@@ -1,5 +1,10 @@
 {
   "app": { "title": "Minimago" },
+  "nav": {
+    "label": "pages",
+    "resize": "Redimensionner",
+    "crop": "Recadrer"
+  },
   "imageTool": {
     "title": "Outils Image",
     "subtitle": "Redimensionne, convertit et compresse",
@@ -16,12 +21,31 @@
     "output": "Sortie",
     "recommended": "Format recommandé pour photos : webp / avif — PNG pour la transparence"
   },
+  "cropTool": {
+    "title": "Recadrer une image",
+    "subtitle": "Découpe une zone précise au pixel près",
+    "choose": "Choisir une image",
+    "noFile": "Aucun fichier sélectionné",
+    "previewHint": "Sélectionne une image pour voir le recadrage",
+    "lockRatio": "Verrouiller le ratio (16:9)",
+    "centerHorizontal": "↔ Centrer H.",
+    "centerVertical": "↕ Centrer V.",
+    "process": "Recadrer",
+    "processing": "Recadrage…",
+    "reset": "Réinitialiser",
+    "success": "Terminé",
+    "recommended": "Astuce : glisse et redimensionne la zone de sélection pour ajuster ton recadrage"
+  },
   "errors": {
     "inputNotFound": "Fichier introuvable",
     "fileTooLarge": "Fichier trop volumineux (limite 100MB).",
     "sizeTooLarge": "Taille demandée trop grande (risque mémoire).",
     "dimensionsOutOfRange": "Dimensions hors limites.",
+    "cropOutOfRange": "La zone de recadrage dépasse l'image.",
+    "cropInvalid": "Dimensions de recadrage invalides.",
+    "invalidDimensions": "Sélection invalide",
     "invalidFormat": "Format non supporté.",
+    "generic": "Erreur lors du traitement",
     "unknown": "Erreur : {{msg}}"
   }
 }

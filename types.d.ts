@@ -8,6 +8,7 @@ interface Window {
     openFiles: () => Promise<string[]>;
     processImage: (opts: {
       inputPath: string;
+      crop?: { x: number; y: number; width: number; height: number };
       width?: number;
       height?: number;
       format?: 'png' | 'jpg' | 'jpeg' | 'webp' | 'svg' | 'avif';

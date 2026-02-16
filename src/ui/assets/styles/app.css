@@ -45,6 +45,42 @@ body {
   margin-bottom: 0px;
 }
 
+.page-tabs {
+  display: inline-flex;
+  gap: 10px;
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.35);
+}
+
+.page-tab {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    color 0.12s ease,
+    background 0.12s ease;
+}
+
+.page-tab:hover {
+  transform: translateY(-1px);
+}
+
+.page-tab.active {
+  background: linear-gradient(90deg, var(--accent-2), #8bdbff);
+  color: #051227;
+  box-shadow: 0 8px 20px rgba(96, 165, 250, 0.15);
+}
+
 .lang-switch {
   margin-left: auto;
   display: inline-flex;
@@ -112,7 +148,6 @@ h1 {
   justify-content: center;
   align-items: flex-start;
   gap: 20px;
-  padding-bottom: 40px;
 }
 
 .card {
@@ -295,6 +330,16 @@ h1 {
   margin-top: 8px;
   align-items: center;
 }
+.actions-crop {
+  flex-direction: column;
+  align-items: stretch;
+}
+.actions .actions-center {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
 .btn {
   cursor: pointer;
   border: none;
@@ -358,6 +403,122 @@ h1 {
   font-size: 12px;
 }
 
+.crop-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.2fr) minmax(240px, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.crop-preview {
+  position: relative;
+  min-height: 240px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background:
+    radial-gradient(circle at top, rgba(110, 231, 183, 0.08), transparent 55%),
+    rgba(8, 16, 32, 0.5);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.crop-preview image {
+  max-height: 500px;
+  max-width: 100%;
+}
+
+.crop-preview img {
+  max-width: 100%;
+  max-height: 320px;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.45);
+}
+
+.crop-placeholder {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  padding: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+
+.crop-dimensions {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  background: rgba(6, 10, 22, 0.7);
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.crop-controls .controls {
+  margin-bottom: 10px;
+}
+
+.crop-controls .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  cursor: pointer;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition:
+    background 0.12s ease,
+    transform 0.08s ease;
+}
+
+.crop-controls .checkbox-label:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-1px);
+}
+
+.crop-controls .checkbox-label input[type='checkbox'] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--muted);
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  outline: none;
+}
+
+.crop-controls .checkbox-label input[type='checkbox']:hover {
+  border-color: var(--accent);
+}
+
+.crop-controls .checkbox-label input[type='checkbox']:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(110, 231, 183, 0.25);
+}
+
+.crop-controls .checkbox-label input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid #02221a;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
 @media (max-width: 560px) {
   .controls {
     grid-template-columns: 1fr;
@@ -367,5 +528,11 @@ h1 {
   }
   body {
     padding: 16px;
+  }
+}
+
+@media (max-width: 900px) {
+  .crop-grid {
+    grid-template-columns: 1fr;
   }
 }

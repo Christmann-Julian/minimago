@@ -1,9 +1,59 @@
-import { app, BrowserWindow, ipcMain, dialog, Menu } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  Menu,
+  protocol,
+  net,
+} from 'electron';
 import { isDev } from './util.js';
 import { getPreloadPath, getUIPath } from './pathResolver.js';
 import { processImage } from './imageProcessor.js';
+import { pathToFileURL } from 'url';
+import path from 'path';
 
 app.on('ready', () => {
+  protocol.handle('media', (request) => {
+    try {
+      const parsedUrl = new URL(request.url);
+
+      let decodedPath = decodeURIComponent(parsedUrl.pathname);
+
+      if (process.platform === 'win32') {
+        if (decodedPath.match(/^\/[a-zA-Z]:/)) {
+          decodedPath = decodedPath.slice(1);
+        }
+      }
+
+      const absolutePath = path.normalize(decodedPath);
+
+      const ext = path.extname(absolutePath).toLowerCase();
+      if (
+        ![
+          '.png',
+          '.jpg',
+          '.jpeg',
+          '.webp',
+          '.svg',
+          '.avif',
+          '.gif',
+          '.bmp',
+        ].includes(ext)
+      ) {
+        console.error(`Unauthorised file extension: ${absolutePath}`);
+        return new Response('Forbidden', { status: 403 });
+      }
+
+      const fileUrl = pathToFileURL(absolutePath).toString();
+
+      return net.fetch(fileUrl);
+    } catch (error) {
+      console.error('media protocol error:', error);
+      return new Response('Internal Server Error', { status: 500 });
+    }
+  });
+
   Menu.setApplicationMenu(null);
   const mainWindow = new BrowserWindow({
     icon: './desktopIcon.png',
