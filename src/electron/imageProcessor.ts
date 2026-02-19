@@ -16,6 +16,9 @@ export type ImageProcessOptions = {
   format?: 'png' | 'jpg' | 'jpeg' | 'webp' | 'svg' | 'avif';
   quality?: number;
   outputPath?: string;
+  removeBg?: boolean;
+  bgColor?: string;
+  bgTolerance?: number;
 };
 
 const ALLOWED_FORMATS = ['png', 'jpg', 'jpeg', 'webp', 'avif', 'svg'] as const;
@@ -90,6 +93,11 @@ function normalizeAndCheckShape(obj: unknown): ImageProcessOptions {
   const q = Number.isFinite(Number(quality)) ? Math.round(Number(quality)) : 80;
   const clampQuality = Math.max(1, Math.min(100, q));
 
+  const removeBg = o.removeBg === true;
+  const bgColor = typeof o.bgColor === 'string' ? o.bgColor : undefined;
+  const bgTolerance =
+    typeof o.bgTolerance === 'number' ? o.bgTolerance : undefined;
+
   return {
     inputPath: o.inputPath,
     crop,
@@ -98,6 +106,9 @@ function normalizeAndCheckShape(obj: unknown): ImageProcessOptions {
     format,
     quality: clampQuality,
     outputPath,
+    removeBg,
+    bgColor,
+    bgTolerance,
   };
 }
 
@@ -148,6 +159,50 @@ export async function processImage(
 
   let pipeline = sharp(opts.inputPath);
 
+  let effectiveExt = targetExt;
+  let finalOutPath = resolvedOut;
+
+  if (opts.removeBg && (targetExt === 'jpeg' || targetExt === 'jpg')) {
+    effectiveExt = 'png';
+    finalOutPath = resolvedOut.replace(/\.jpe?g$/i, '.png');
+  }
+
+  if (opts.removeBg) {
+    const hex = opts.bgColor || '#ffffff';
+    const rTarget = parseInt(hex.slice(1, 3), 16);
+    const gTarget = parseInt(hex.slice(3, 5), 16);
+    const bTarget = parseInt(hex.slice(5, 7), 16);
+
+    const tolerance = opts.bgTolerance !== undefined ? opts.bgTolerance : 20;
+
+    const { data, info } = await pipeline
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+
+      if (
+        Math.abs(r - rTarget) <= tolerance &&
+        Math.abs(g - gTarget) <= tolerance &&
+        Math.abs(b - bTarget) <= tolerance
+      ) {
+        data[i + 3] = 0;
+      }
+    }
+
+    pipeline = sharp(data, {
+      raw: {
+        width: info.width,
+        height: info.height,
+        channels: 4,
+      },
+    });
+  }
+
   if (opts.crop) {
     pipeline = pipeline.extract({
       left: opts.crop.x,
@@ -160,25 +215,25 @@ export async function processImage(
   if (opts.width || opts.height)
     pipeline = pipeline.resize(opts.width ?? null, opts.height ?? null);
 
-  if (targetExt === 'jpeg' || targetExt === 'jpg') {
+  if (effectiveExt === 'jpeg' || effectiveExt === 'jpg') {
     pipeline = pipeline.jpeg({ quality: opts.quality ?? 80 });
-  } else if (targetExt === 'png') {
+  } else if (effectiveExt === 'png') {
     pipeline = pipeline.png(pngOptionsFromQuality(opts.quality));
-  } else if (targetExt === 'webp') {
+  } else if (effectiveExt === 'webp') {
     pipeline = pipeline.webp({ quality: opts.quality ?? 80 });
-  } else if (targetExt === 'avif') {
+  } else if (effectiveExt === 'avif') {
     pipeline = pipeline.avif({
       quality: Math.max(10, Math.min(80, opts.quality ?? 50)),
     });
-  } else if (targetExt === 'svg') {
+  } else if (effectiveExt === 'svg') {
     // @todo : sharp does not support svg output. Consider using another library if needed.
     throw new Error('SVG output format is not supported yet');
   }
 
-  await fsPromises.mkdir(path.dirname(resolvedOut), { recursive: true });
-  await pipeline.toFile(resolvedOut);
+  await fsPromises.mkdir(path.dirname(finalOutPath), { recursive: true });
+  await pipeline.toFile(finalOutPath);
 
-  return { outputPath: resolvedOut };
+  return { outputPath: finalOutPath };
 }
 
 function pngOptionsFromQuality(q: number | undefined) {

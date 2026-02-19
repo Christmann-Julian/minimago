@@ -3,7 +3,8 @@
   "nav": {
     "label": "pages",
     "resize": "Redimensionner",
-    "crop": "Recadrer"
+    "crop": "Recadrer",
+    "removebg": "Détourage"
   },
   "imageTool": {
     "title": "Outils Image",
@@ -35,6 +36,22 @@
     "reset": "Réinitialiser",
     "success": "Terminé",
     "recommended": "Astuce : glisse et redimensionne la zone de sélection pour ajuster ton recadrage"
+  },
+  "removeBg": {
+    "title": "Détourage",
+    "subtitle": "Supprime le fond d'une image",
+    "choose": "Choisir une image",
+    "noFile": "Aucun fichier sélectionné",
+    "previewHint": "Aperçu de l'image",
+    "colorToRemove": "Couleur à effacer (hex)",
+    "bgTolerance": "Tolérance",
+    "bgToleranceDesc": "0 = Couleur exacte, 100 = Tout effacer",
+    "process": "Retirer le fond",
+    "processing": "Traitement…",
+    "reset": "Réinitialiser",
+    "success": "Fond supprimé avec succès !",
+    "output": "Enregistré :",
+    "recommended": "Info: Le format de sortie sera automatiquement converti en PNG."
   },
   "errors": {
     "inputNotFound": "Fichier introuvable",

@@ -3,7 +3,8 @@
   "nav": {
     "label": "pages",
     "resize": "Resize",
-    "crop": "Crop"
+    "crop": "Crop",
+    "removebg": "Remove BG"
   },
   "imageTool": {
     "title": "Image Tools",
@@ -35,6 +36,22 @@
     "reset": "Reset",
     "success": "Done",
     "recommended": "Tip: drag and resize the selection area to adjust your crop"
+  },
+  "removeBg": {
+    "title": "Remove Background",
+    "subtitle": "Removes the background of an image",
+    "choose": "Choose an image",
+    "noFile": "No file selected",
+    "previewHint": "Preview of the image",
+    "colorToRemove": "Color to remove (hex)",
+    "bgTolerance": "Tolerance",
+    "bgToleranceDesc": "0 = Exact color, 100 = Remove all",
+    "process": "Remove Background",
+    "processing": "Processing…",
+    "reset": "Reset",
+    "success": "Background removed successfully!",
+    "output": "Saved:",
+    "recommended": "Info: The output format will be automatically converted to PNG."
   },
   "errors": {
     "inputNotFound": "Input file not found",

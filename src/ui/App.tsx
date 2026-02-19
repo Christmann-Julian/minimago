@@ -3,40 +3,40 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ImageTool from './components/ImageTools';
 import CropTool from './components/CropTool';
+import RemoveBgTool from './components/RemoveBgTool';
 import AppHeader from './components/AppHeader';
 
 function App() {
   const { t } = useTranslation();
-  const [page, setPage] = useState<'resize' | 'crop'>('resize');
+  const [page, setPage] = useState<'resize' | 'crop' | 'removebg'>('resize');
 
   return (
     <>
       <AppHeader />
-      <div className="tool-container">
-        <div style={{ width: '100%', maxWidth: '880px' }}>
-          <div className="page-tabs" role="tablist" aria-label={t('nav.label')}>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={page === 'resize'}
-              className={`page-tab ${page === 'resize' ? 'active' : ''}`}
-              onClick={() => setPage('resize')}
-            >
-              {t('nav.resize')}
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={page === 'crop'}
-              className={`page-tab ${page === 'crop' ? 'active' : ''}`}
-              onClick={() => setPage('crop')}
-            >
-              {t('nav.crop')}
-            </button>
-          </div>
-        </div>
+      <div className="page-tabs" role="tablist" aria-label={t('nav.label')}>
+        <button
+          className={`page-tab ${page === 'resize' ? 'active' : ''}`}
+          onClick={() => setPage('resize')}
+        >
+          {t('nav.resize')}
+        </button>
+        <button
+          className={`page-tab ${page === 'crop' ? 'active' : ''}`}
+          onClick={() => setPage('crop')}
+        >
+          {t('nav.crop')}
+        </button>
+        <button
+          className={`page-tab ${page === 'removebg' ? 'active' : ''}`}
+          onClick={() => setPage('removebg')}
+        >
+          {t('nav.removebg')}
+        </button>
       </div>
-      {page === 'resize' ? <ImageTool /> : <CropTool />}
+
+      {page === 'resize' && <ImageTool />}
+      {page === 'crop' && <CropTool />}
+      {page === 'removebg' && <RemoveBgTool />}
     </>
   );
 }

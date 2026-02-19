@@ -14,6 +14,9 @@ interface Window {
       format?: 'png' | 'jpg' | 'jpeg' | 'webp' | 'svg' | 'avif';
       quality?: number;
       outputPath?: string;
+      removeBg?: boolean;
+      bgColor?: string;
+      bgTolerance?: number;
     }) => Promise<
       | { success: true; data: { outputPath: string } }
       | { success: false; error: { code: string; message: string } }
