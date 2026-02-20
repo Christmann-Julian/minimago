@@ -13,30 +13,34 @@ function App() {
   return (
     <>
       <AppHeader />
-      <div className="page-tabs" role="tablist" aria-label={t('nav.label')}>
-        <button
-          className={`page-tab ${page === 'resize' ? 'active' : ''}`}
-          onClick={() => setPage('resize')}
-        >
-          {t('nav.resize')}
-        </button>
-        <button
-          className={`page-tab ${page === 'crop' ? 'active' : ''}`}
-          onClick={() => setPage('crop')}
-        >
-          {t('nav.crop')}
-        </button>
-        <button
-          className={`page-tab ${page === 'removebg' ? 'active' : ''}`}
-          onClick={() => setPage('removebg')}
-        >
-          {t('nav.removebg')}
-        </button>
-      </div>
+      <div className="tool-container">
+        <div className="tool-inner">
+          <div className="page-tabs" role="tablist" aria-label={t('nav.label')}>
+            <button
+              className={`page-tab ${page === 'resize' ? 'active' : ''}`}
+              onClick={() => setPage('resize')}
+            >
+              {t('nav.resize')}
+            </button>
+            <button
+              className={`page-tab ${page === 'crop' ? 'active' : ''}`}
+              onClick={() => setPage('crop')}
+            >
+              {t('nav.crop')}
+            </button>
+            <button
+              className={`page-tab ${page === 'removebg' ? 'active' : ''}`}
+              onClick={() => setPage('removebg')}
+            >
+              {t('nav.removebg')}
+            </button>
+          </div>
 
-      {page === 'resize' && <ImageTool />}
-      {page === 'crop' && <CropTool />}
-      {page === 'removebg' && <RemoveBgTool />}
+          {page === 'resize' && <ImageTool />}
+          {page === 'crop' && <CropTool />}
+          {page === 'removebg' && <RemoveBgTool />}
+        </div>
+      </div>
     </>
   );
 }

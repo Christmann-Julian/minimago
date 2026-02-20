@@ -150,6 +150,11 @@ h1 {
   gap: 20px;
 }
 
+.tool-inner {
+  width: 100%;
+  max-width: 880px;
+}
+
 .card {
   width: 100%;
   max-width: 880px;
