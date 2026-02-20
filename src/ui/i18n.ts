@@ -3,11 +3,15 @@ import { initReactI18next } from 'react-i18next';
 import en from './locales/en/common.json';
 import fr from './locales/fr/common.json';
 
+const savedLang =
+  typeof window !== 'undefined' ? localStorage.getItem('minimago-lang') : null;
+
 const initialLang =
-  typeof navigator !== 'undefined' &&
+  savedLang ||
+  (typeof navigator !== 'undefined' &&
   String(navigator.language ?? '').startsWith('fr')
     ? 'fr'
-    : 'en';
+    : 'en');
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -25,8 +29,12 @@ if (typeof window !== 'undefined' && window.electron?.getAppLocale) {
   window.electron
     .getAppLocale()
     .then((raw: unknown) => {
-      const lang = String(raw ?? '').startsWith('fr') ? 'fr' : 'en';
-      if (lang !== i18n.language) i18n.changeLanguage(lang);
+      if (!localStorage.getItem('minimago-lang')) {
+        const osLang = String(raw ?? '').startsWith('fr') ? 'fr' : 'en';
+        if (osLang !== i18n.language) {
+          i18n.changeLanguage(osLang);
+        }
+      }
     })
     .catch(() => {});
 }

@@ -27,6 +27,9 @@
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": true
+    "deleteAppDataOnUninstall": true,
+    "displayLanguageSelector": true,
+    "installerLanguages": ["fr_FR", "en_US"],
+    "include": "installer.nsh"
   }
 }

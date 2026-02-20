@@ -6,7 +6,10 @@ export default function AppHeader() {
   function changeLang(lang: 'en' | 'fr') {
     if (lang === i18n.language) return;
     document.documentElement.classList.add('lang-changing');
+
     i18n.changeLanguage(lang).finally(() => {
+      localStorage.setItem('minimago-lang', lang);
+
       window.setTimeout(() => {
         document.documentElement.classList.remove('lang-changing');
       }, 220);

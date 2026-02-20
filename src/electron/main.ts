@@ -12,6 +12,7 @@ import { getPreloadPath, getUIPath } from './pathResolver.js';
 import { processImage } from './imageProcessor.js';
 import { pathToFileURL } from 'url';
 import path from 'path';
+import fs from 'fs';
 
 app.on('ready', () => {
   protocol.handle('media', (request) => {
@@ -57,6 +58,8 @@ app.on('ready', () => {
   Menu.setApplicationMenu(null);
   const mainWindow = new BrowserWindow({
     icon: './desktopIcon.png',
+    width: 900,
+    height: 600,
     webPreferences: {
       preload: getPreloadPath(),
       devTools: isDev(),
@@ -102,6 +105,20 @@ app.on('ready', () => {
   });
 
   ipcMain.handle('app:get-locale', () => {
+    try {
+      const exeDir = path.dirname(app.getPath('exe'));
+      const langFile = path.join(exeDir, 'app_lang.txt');
+
+      if (fs.existsSync(langFile)) {
+        const installerLang = fs.readFileSync(langFile, 'utf8').trim();
+        if (installerLang === 'fr' || installerLang === 'en') {
+          return installerLang;
+        }
+      }
+    } catch (e) {
+      console.error('Error reading installer language file:', e);
+    }
+
     return app.getLocale();
   });
 });
